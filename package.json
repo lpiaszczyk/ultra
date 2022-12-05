@@ -1,0 +1,12 @@
+{
+  "name": "ultra-interview",
+  "version": "1.0.0",
+  "description": "interview task for Ultra.io",
+  "main": "index.js",
+  "scripts": {},
+  "author": "lukasz piaszczyk",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.28.1"
+  }
+}
