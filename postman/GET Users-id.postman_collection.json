@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "440f6f6e-d5dd-4962-94e4-d820c6ae3713",
+		"name": "GET Users/id",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1496418"
+	},
+	"item": [
+		{
+			"name": "Setup",
+			"item": [
+				{
+					"name": "POST users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"test_id\", pm.response.json().id);",
+									"pm.collectionVariables.set(\"test_email\", pm.response.json().email);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_key}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test Get by id\",\n    \"email\": \"{{$guid}}@testing.net\",\n    \"gender\": \"male\",\n    \"status\": \"active\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authorization",
+			"item": [
+				{
+					"name": "GET users Refer other owner object",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test('Correct message returned', () => {",
+									"    pm.expect(jsonData.message).to.equal('Resource not found')",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_key}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Validation",
+			"item": [
+				{
+					"name": "GET users/id invalid number id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 404\", () => {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test('Correct message returned', () => {",
+									"    pm.expect(jsonData.message).to.equal('Resource not found')",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/-1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"-1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET users/id invalid string id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 404\", () => {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test('Correct message returned', () => {",
+									"    pm.expect(jsonData.message).to.equal('Resource not found')",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/some_id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"some_id"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tests",
+			"item": [
+				{
+					"name": "GET users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Returns expected data', () => {",
+									"    pm.expect(jsonData.id).to.equal(pm.collectionVariables.get(\"test_id\"))",
+									"    pm.expect(jsonData.name).to.equal('Test Get by id')",
+									"    pm.expect(jsonData.email).to.equal(pm.collectionVariables.get(\"test_email\"))",
+									"    pm.expect(jsonData.gender).to.equal('male')",
+									"    pm.expect(jsonData.status).to.equal('active')",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{api_key}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "cookie",
+								"value": "_gorest_session=hBpGTDwL5SBKrYGTdiKpWB9wEvjvmoTUA6RqZh5lDkeGV1UkRWjyXU%2FkTzgfc5b7PG2UObPvkwENgr7MGnM9htlrJep55OmRk%2FwzFBP41xhYTUM%2BwAK5WrwZ5O6L2o03jyzxNqFIYMlnTalgcqEH0oq5429FZltT65BA1f3PceafnThxVKQNJONSannS6aYT3RC6u8FojvEGCEUEnua%2Fn6D2%2FWHPAdKq5M9xL5FsXLvDo9DLS36GC%2FA9blX7FUa2dThASDlbAHVheSI0iAhhb6ug9bR4sKgUHahm9lxXf9dZ75bHyKtayUkYeFKZlv8%3D--bg6%2FyUeT889G%2FRer--4UJPks%2BAhClWpP05oGxN%2BQ%3D%3D",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/{{test_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "first_page",
+			"value": ""
+		},
+		{
+			"key": "test_id",
+			"value": ""
+		},
+		{
+			"key": "test_email",
+			"value": ""
+		}
+	]
+}
