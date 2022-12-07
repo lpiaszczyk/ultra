@@ -41,7 +41,7 @@ const config: PlaywrightTestConfig = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    storageState: './tests/stoarge/storageState.json',
+    storageState: './tests/storage/storageState.json',
     headless: false,
     testIdAttribute: 'data-test',
     screenshot: 'only-on-failure'

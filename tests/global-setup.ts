@@ -8,7 +8,7 @@ async function globalSetup(config: FullConfig) {
   await page.locator('#password').fill('secret_sauce');
   await page.locator('#login-button').click();
   // Save signed-in state to 'storageState.json'.
-  await page.context().storageState({ path: 'tests/stoarge/storageState.json' });
+  await page.context().storageState({ path: 'tests/storage/storageState.json' });
   await browser.close();
 }
 
