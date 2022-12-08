@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { Checkout } from './pageObjects/Checkout.po';
 import { Inventory } from './pageObjects/Inventory.po';
 
 test.describe('Purchases flow', () => {
@@ -22,5 +23,35 @@ test.describe('Purchases flow', () => {
         await expect(checkoutFinishedPage.completeHeader).toBeVisible()
         await expect(checkoutFinishedPage.completeText).toBeVisible()
         await expect(checkoutFinishedPage.ponyExpressImage).toBeVisible()
+    })
+
+    test('Cannot be completed with empty postal data - First name', async ({page}) => {
+        const checkoutPage = new Checkout(page)
+        await checkoutPage.goto()
+        await checkoutPage.lastName.fill('test')
+        await checkoutPage.postalCode.fill('test')
+        await checkoutPage.continueButton.click()
+
+        await expect(checkoutPage.errorDetails).toContainText('Error: First Name is required')
+    })
+
+    test('Cannot be completed with empty postal data - Last name', async ({page}) => {
+        const checkoutPage = new Checkout(page)
+        await checkoutPage.goto()
+        await checkoutPage.firstName.fill('test')
+        await checkoutPage.postalCode.fill('test')
+        await checkoutPage.continueButton.click()
+
+        await expect(checkoutPage.errorDetails).toContainText('Error: Last Name is required')
+    })
+
+    test('Cannot be completed with empty postal data - Postal code', async ({page}) => {
+        const checkoutPage = new Checkout(page)
+        await checkoutPage.goto()
+        await checkoutPage.firstName.fill('test')
+        await checkoutPage.lastName.fill('test')
+        await checkoutPage.continueButton.click()
+
+        await expect(checkoutPage.errorDetails).toContainText('Error: Postal Code is required')
     })
 })
