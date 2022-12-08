@@ -1,13 +1,20 @@
 # Interview task
 ## UI Automation
-UI automation task is created using Playwright + TypeScript. It contains one test checking 'Purchase flow'. 
-### Test scenario:
+UI automation task is created using Playwright + TypeScript. It contains couple of tests checking 'Purchase flow'. 
+### Test scenarios:
+#### Purchase flow can be completed with correct data
 1. Login as standard_user (part of global setup)
 2. From inventory page add Backpack to Cart
 3. Go to cart, check that item is added
 4. Proceed with checkout, fill form with postal data
 5. Verify prices are calculated as expected
 6. Finish checkout and verify that success message is displayed
+
+#### Purchase flow cannot be completed with empty postal data (First Name / Last Name / Postal Code)(splitted into 3 tests)
+1. Login as standard_user (part of global setup)
+2. Navigate to checkout first step
+3. Fill Postal data form leaving one box empty
+4. Click continue and verify that error message is displayed
 
 ### To run solution:
 1. Download necessary packages with `npm i`
